@@ -1,5 +1,5 @@
-; O JOGO DA BRUXa
-;	Thamyres Santos Silva	n° 11819240
+; O JOGO DA BRUXA
+; Thamyres Santos Silva	n° 11819240
 
 jmp main
 
@@ -75,8 +75,6 @@ Vez: var #1;1 é vez do pc, 0 é do usuario
 Pontuacao: var #0
 rnd: var #1
 
-;Se r0 == r1 == r2 => r3=1
-;caso contrário r3 = 0
 Iguais:
 	push r0
 	push r1
@@ -196,7 +194,6 @@ AlguemGanhou:
 	call ColoreLinha
 	call ProximoSlot
 	call reinicia
-	call AumentaPontuacao
 	
 	NinguemGanhou:
 	call DeuVelha
@@ -218,17 +215,10 @@ DeuVelha:
 	
 	call PrintSemCursor
 	call ProximoSlot
-	call reinicia
-	
-	;call ProximoSlot
-	;call AumentaPontuacao
-	;reiniciar o jogo
-	;call reinicia
-	
+	call reinicia	
 	
 	NaoDeuVelha:
-	;nao faz nada
-	
+
 	pop r0
 rts
 
@@ -238,9 +228,6 @@ ProximoSlot:
 	push r2
 	push r3
 	
-	;baixar o valor do slot
-	;somar 1
-	;atualizar r5 com base nele
 	load r0, Slot;Slot++;
 	inc r0
 	loadn r2, #70
@@ -248,7 +235,6 @@ ProximoSlot:
 
 	store Slot, r0
 	
-	;r5 = (Slot mod 10)*4 + (slot/10)*160
 	loadn r2, #10
 	
 	mod r1, r0, r2
@@ -296,8 +282,8 @@ ColoreLinha:;Colore a linha que ganhou
 	
 	jmp SaiCor
 	CorAdversario:
-	
 	loadn r7, #512
+	call AumentaPontuacao
 	
 	SaiCor:
 	loadn r3, #Tabuleiro
@@ -370,7 +356,6 @@ AumentaPontuacao:
 rts
 
 PCJoga:
-	;você só tem que escolher um lugar vazio pra jogar
 	push r0
 	push r1
 	push r2
@@ -510,7 +495,7 @@ printnaoenter:
 	pop r2
 	pop r1
 	pop r0
-rts                   ; Retorna da sub-rotina
+rts                   
 
 RND:
 	push r0
@@ -591,7 +576,7 @@ ImprimeMensagem1:
 rts
 
 
-overScreenstr: ;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que o primeiro caractere da mensagem sera' impresso;  r1 = endereco onde comeca a mensagem; r2 = cor da mensagem.   Obs: a mensagem sera' impressa ate' encontrar "/0"
+overScreenstr: 
    push r0  ; protege o r0 na pilha para preservar seu valor
    push r1  ; protege o r1 na pilha para preservar seu valor
    push r2  ; protege o r1 na pilha para preservar seu valor
@@ -695,8 +680,7 @@ verifica_resultado:
 	cmp r0, r4
     jeg gameOverGanhou
     
-    cmp r0, r4
-    jle gameOverPerdeu 
+    jmp gameOverPerdeu 
     
     pop r0
 rts
